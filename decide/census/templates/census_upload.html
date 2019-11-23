@@ -1,17 +1,29 @@
+<html>
+    <head>
+        <title>Census upload | Django</title>
+    </head>
+    <body>
+        {% if messages %}
+            {% for message in messages %}
+                <div style="margin: auto; width: 50%; padding: 10px;"> 
+                    <strong> {{message|safe}} </strong>
+                </div>
+            {% endfor %}
+        {% else %}
+            {{order}}
+            <div style="margin: auto; width: 50%; padding: 10px;">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label>Upload a file</label>
+                    <input type="file" name="file" accept=".csv"/>
+                    <p>Only accepts CSV files</p>
+                    <button type="submit">Upload</button>
+                </form>    
+            </div>    
+        {% endif %}
+        
+        <a href="http://localhost:8000/admin/census/census/"> Volver </a>
+        <br>
 
-{% if messages %}
-    {% for message in messages %}
-        <div>
-            <strong> {{message|safe}} </strong>
-        </div>
-    {% endfor %}
-{% else %}
-{{order}}
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label>Upload a file</label>
-    <input type="file" name="file"> 
-    <p>Only accepts CSV files</p>
-    <button type="submit">Upload</button>
-</form>    
-{% endif %}
+    </body>
+</html>

@@ -68,7 +68,7 @@ def census_upload(request):
 
     csv_file = request.FILES['file']
 
-    if not csv_file.name.endswith('.csv'):
+    if not(csv_file.name.endswith(".csv")):
         messages.error(request, 'This is not a csv file')
 
     data_set = csv_file.read().decode('UTF-8')
@@ -79,9 +79,6 @@ def census_upload(request):
             voting_id= column[0],
             voter_id = column[1]
         )
-
-        # YYYY-MM-DD HH:MM
-        
 
     context = {}
     return render(request, template, context)
