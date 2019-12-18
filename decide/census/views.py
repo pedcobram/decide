@@ -12,6 +12,11 @@ from rest_framework.status import (
 
 from base.perms import UserIsStaff
 from .models import Census
+from authentication.models import DecideUser
+from django.shortcuts import render
+from django.contrib import messages
+import datetime
+from django.contrib.auth.decorators import permission_required
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -49,3 +54,36 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         except ObjectDoesNotExist:
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
+
+@permission_required('admin.can_add_log_entry')
+def census_display(request):
+    template = 'census_display.html'
+    census_list = Census.objects.all()
+    user_list = DecideUser.objects.all()
+    context = {'census_list': census_list,'user_list':user_list}
+
+    if request.method == 'GET':
+        return render(request,template,context)
+
+    voting_id = request.POST.get('voting_id')
+    voter_id = request.POST.get('voter_id')
+    exists = False
+    for user in user_list:
+        if user.id == int(voter_id):
+            exists = True
+            break
+    if exists:
+        try:
+            census = Census(voting_id = voting_id, voter_id = user.id, 
+            fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+            provincia = user.provincia, localidad = user.localidad)
+            census.save()
+            context['success'] = 'Census has been successfully stored'
+            return render(request,template,context)
+        except:
+            messages.error(request, "This census already exists")
+    else:
+        messages.error(request, 'This user does not exist')
+
+    return render(request,template,context)
+
