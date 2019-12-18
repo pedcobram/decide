@@ -12,6 +12,12 @@ from rest_framework.status import (
 
 from base.perms import UserIsStaff
 from .models import Census
+from voting.models import Voting
+from authentication.models import DecideUser
+from django.shortcuts import render
+from django.contrib import messages
+import datetime
+from django.contrib.auth.decorators import permission_required
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -49,3 +55,46 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         except ObjectDoesNotExist:
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
+
+def census_display(request):
+    template = 'census_display.html'
+    census_list = Census.objects.all()
+    voting_list = Voting.objects.all()
+    user_list = DecideUser.objects.all()
+    context = {'census_list': census_list,'voting_list':voting_list,'user_list':user_list}
+
+    if request.method == 'GET':
+        return render(request,template,context)
+
+    voting_id = request.POST.get('voting_id')
+    voter_id = request.POST.get('voter_id')
+    if voting_id == None or voter_id == None:
+        return render(request,template,context,status=ST_401)
+    else:
+        voting_exists = False
+        for voting in voting_list:
+            if voting.id == int(voting_id): 
+                voting_exists = True
+                break
+        if voting_exists:
+            user_exists = False
+            for user in user_list:
+                if user.id == int(voter_id):
+                    user_exists = True
+                    break
+            if user_exists:
+                try:
+                    census = Census(voting_id = voting_id, voter_id = user.id, 
+                    fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+                    provincia = user.provincia, localidad = user.localidad)
+                    census.save()
+                    context['success'] = 'Census has been successfully stored'
+                    return render(request,template,context)
+                except:
+                    messages.error(request, "This census already exists")
+            else:
+                messages.error(request, 'This user does not exist')
+        else:
+            messages.error(request, "This voting does not exist")
+
+        return render(request,template,context)
