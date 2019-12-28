@@ -11,7 +11,7 @@ from rest_framework.status import (
 )
 
 from base.perms import UserIsStaff
-from .models import Census
+from census.models import Census
 from authentication.models import DecideUser
 from django.shortcuts import render
 from django.contrib import messages
@@ -20,6 +20,8 @@ from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
 
 from datetime import datetime, date
+
+import numpy as np
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -107,6 +109,13 @@ def census_create_by_city(request, voting_id, provincia):
     return HttpResponse('<h1>POST BY PROVINCIA</h1>')
 
 @permission_required('admin.can_add_log_entry')
+def census_delete_by_city(request,provincia):
+    census_set = Census.objects.filter(provincia=provincia)
+    for census in census_set:
+        census.delete()
+    return HttpResponse('<h1>DELETED CENSUS BY PROVINCIA</h1>')
+
+@permission_required('admin.can_add_log_entry')
 def census_create_by_localidad(request, voting_id, localidad):
 
     users_set = DecideUser.objects.filter(localidad=localidad)
@@ -119,10 +128,13 @@ def census_create_by_localidad(request, voting_id, localidad):
         census.save()
     return HttpResponse('<h1>POST BY LOCALIDAD</h1>')
 
-'''
 @permission_required('admin.can_add_log_entry')
-def census_delete_by_city(request, voting_id, provincia):
-'''
+def census_delete_by_localidad(request,localidad):
+    census_set = Census.objects.filter(localidad=localidad)
+    for census in census_set:
+        census.delete()
+    return HttpResponse('<h1>DELETED CENSUS BY LOCALIDAD/h1>')
+
 @permission_required('admin.can_add_log_entry')
 def census_create_by_age(request, voting_id, edad_minima):
 
@@ -163,7 +175,32 @@ def census_create_by_genero(request, voting_id, genero):
         census.save()
     return HttpResponse('<h1>POST BY GENERO</h1>')
 
+@permission_required('admin.can_add_log_entry')
+def census_delete_by_genero(request,genero):
+    census_set = Census.objects.filter(genero=genero)
+    for census in census_set:
+        census.delete()
+    return HttpResponse('<h1>DELETED CENSUS BY GENERO</h1>')
 
+def get_all_provincias(request):
+    provincias = []
+    users_set = DecideUser.objects.all()
+
+    for user in users_set:
+        provincia = user.provincia
+        print("Provincia: "+provincia)
+        '''
+        if provincia not in provincias:
+            print("Provincias: "+str(provincias))
+            provincias.append(user.provincia)
+        '''
+        provincias.append(user.provincia)
+    
+    np.unique(provincias)
+    print("Provincias: "+str(provincias))        
+    
+
+    return HttpResponse({"provincias":provincias})
 
 
 
