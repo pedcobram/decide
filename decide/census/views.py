@@ -17,6 +17,7 @@ from django.shortcuts import render
 from django.contrib import messages
 import datetime
 from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponse
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -86,4 +87,35 @@ def census_display(request):
         messages.error(request, 'This user does not exist')
 
     return render(request,template,context)
+
+@permission_required('admin.can_add_log_entry')
+def census_create_by_city(request, voting_id, provincia):
+
+    print("Provincia: "+provincia)
+
+    users_set = DecideUser.objects.filter(provincia=provincia)
+
+    print("SET: "+str(users_set[0].fecha_nacimiento))
+
+    x = 1
+    for user in users_set:
+        Census.objects.update_or_create(
+            voting_id = voting_id,
+            voter_id = x+1,
+            fecha_nacimiento = user.fecha_nacimiento,
+            genero = user.genero,
+            provincia = user.provincia,
+            localidad =  user.provincia)
+       
+        x = x+1
+    return HttpResponse('<h1>POST</h1>')
+
+
+
+
+
+
+
+
+
 
