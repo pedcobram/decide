@@ -19,6 +19,8 @@ import datetime
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
 
+from datetime import datetime, date
+
 
 class CensusCreate(generics.ListCreateAPIView):
     permission_classes = (UserIsStaff,)
@@ -97,13 +99,69 @@ def census_create_by_city(request, voting_id, provincia):
 
 
     for user in users_set:
+
         census = Census(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
         census.save()
-    return HttpResponse('<h1>POST</h1>')
+    return HttpResponse('<h1>POST BY PROVINCIA</h1>')
+
+@permission_required('admin.can_add_log_entry')
+def census_create_by_localidad(request, voting_id, localidad):
+
+    users_set = DecideUser.objects.filter(localidad=localidad)
+
+    for user in users_set:
+
+        census = Census(voting_id = voting_id, voter_id = user.id, 
+            fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+            provincia = user.provincia, localidad = user.localidad)
+        census.save()
+    return HttpResponse('<h1>POST BY LOCALIDAD</h1>')
+
+'''
+@permission_required('admin.can_add_log_entry')
+def census_delete_by_city(request, voting_id, provincia):
+'''
+@permission_required('admin.can_add_log_entry')
+def census_create_by_age(request, voting_id, edad_minima):
+
+    print("Voting id: "+str(voting_id))
+
+    users_set = DecideUser.objects.all()
+
+    for user in users_set:
+        fecha_nacimiento = user.fecha_nacimiento
+        fecha_actual = date.today()
+        #fd_a = user.fecha_nacimiento.strftime("%d/%m/%Y")
+        #date_now = date.today().strftime("%d/%m/%Y")
+        #print("Fecha de nacimiento: "+str(fd_a))
+        #print("Date now: "+str(date_now))
+        years = fecha_actual.year- fecha_nacimiento.year -((fecha_actual.month,fecha_actual.day)<(fecha_nacimiento.month,fecha_nacimiento.day))
+        print("Years: "+str(years))
+        print("Fecha de nacimiento: "+str(fecha_nacimiento))
+
+        if years>=edad_minima:
+            census = Census(voting_id = voting_id, voter_id = user.id, 
+            fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+            provincia = user.provincia, localidad = user.localidad)
+            census.save()
+
+    return HttpResponse('<h1>POST BY AGE</h1>')
 
 
+@permission_required('admin.can_add_log_entry')
+def census_create_by_genero(request, voting_id, genero):
+
+    users_set = DecideUser.objects.filter(genero=genero)
+
+    for user in users_set:
+
+        census = Census(voting_id = voting_id, voter_id = user.id, 
+            fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+            provincia = user.provincia, localidad = user.localidad)
+        census.save()
+    return HttpResponse('<h1>POST BY GENERO</h1>')
 
 
 

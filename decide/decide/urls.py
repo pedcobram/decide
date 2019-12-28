@@ -17,7 +17,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_swagger.views import get_swagger_view
-from census.views import census_display, census_create_by_city
+from census.views import census_display, census_create_by_city,census_create_by_localidad ,census_create_by_age, census_create_by_genero
 
 
 schema_view = get_swagger_view(title='Decide API')
@@ -28,6 +28,9 @@ urlpatterns = [
     path('gateway/', include('gateway.urls')),
     path('admin/census-display/',census_display),
     path('census_create_by_city/<int:voting_id>/<str:provincia>/', census_create_by_city, name='census_create_by_city'),
+    path('census_create_by_localidad/<int:voting_id>/<str:localidad>/', census_create_by_localidad, name='census_create_by_localidad'),
+    path('census_create_by_age/<int:voting_id>/<int:edad_minima>/', census_create_by_age, name='census_create_by_age'),
+    path('census_create_by_genero/<int:voting_id>/<str:genero>/', census_create_by_genero, name='census_create_by_age'),
 
 ]
 

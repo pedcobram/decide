@@ -8,6 +8,6 @@ class CensusAdmin(admin.ModelAdmin):
 
     search_fields = ('voter_id', 'fecha_nacimiento','genero','provincia','localidad',)
 
-    change_list_template = 'census_create_city.html'
+    change_list_template = 'census_create_by_parameter.html'
 
 admin.site.register(Census, CensusAdmin)
