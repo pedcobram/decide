@@ -95,19 +95,12 @@ def census_create_by_city(request, voting_id, provincia):
 
     users_set = DecideUser.objects.filter(provincia=provincia)
 
-    print("SET: "+str(users_set[0].fecha_nacimiento))
 
-    x = 1
     for user in users_set:
-        Census.objects.update_or_create(
-            voting_id = voting_id,
-            voter_id = x+1,
-            fecha_nacimiento = user.fecha_nacimiento,
-            genero = user.genero,
-            provincia = user.provincia,
-            localidad =  user.provincia)
-       
-        x = x+1
+        census = Census(voting_id = voting_id, voter_id = user.id, 
+            fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+            provincia = user.provincia, localidad = user.localidad)
+        census.save()
     return HttpResponse('<h1>POST</h1>')
 
 
