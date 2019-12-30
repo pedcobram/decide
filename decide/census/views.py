@@ -15,8 +15,9 @@ from .models import Census
 
 from django.shortcuts import render
 from django.contrib import messages
-import csv, io
+import csv, io, argparse
 from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -55,7 +56,6 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
 
-@permission_required('admin.can_add_log_entry')
 def census_upload(request):
     template = "census_upload.html"
 
@@ -69,11 +69,13 @@ def census_upload(request):
     csv_file = request.FILES['file']
 
     if not(csv_file.name.endswith(".csv")):
-        messages.error(request, 'This is not a csv file')
+        messages.error(request, 'This is not a csv file, try again with a valid file format')
+        return HttpResponseRedirect('../upload-csv/')      
 
     data_set = csv_file.read().decode('UTF-8')
     io_string = io.StringIO(data_set)
     next(io_string)
+    
     for column in csv.reader(io_string, delimiter=',', quotechar='|'):
         _, created = Census.objects.update_or_create(
             voting_id= column[0],

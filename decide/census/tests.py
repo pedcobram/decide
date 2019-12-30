@@ -1,4 +1,4 @@
-import random
+import random, os
 from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIClient
@@ -73,3 +73,14 @@ class CensusTestCase(BaseTestCase):
         response = self.client.delete('/census/{}/'.format(1), data, format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
+
+    def test_csv_upload_success(self):
+        myfile = open('census/test.csv','r') 
+        response = self.client.post('/upload-csv/', {'file':myfile})
+        self.assertEqual(response.status_code, 200)
+
+    def test_csv_upload_incorrectFileType(self):
+        myfile = open('census/tests.py','r') 
+        response = self.client.post('/upload-csv/', {'file':myfile})
+        self.assertEqual(response.status_code, 302)
+       
