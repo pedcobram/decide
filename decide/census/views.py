@@ -1,3 +1,4 @@
+import csv
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import generics
@@ -9,10 +10,10 @@ from rest_framework.status import (
         HTTP_401_UNAUTHORIZED as ST_401,
         HTTP_409_CONFLICT as ST_409
 )
-
+from django.shortcuts import HttpResponse
 from base.perms import UserIsStaff
 from .models import Census
-
+from django.contrib.auth.decorators import permission_required
 
 class CensusCreate(generics.ListCreateAPIView):
     permission_classes = (UserIsStaff,)
@@ -49,3 +50,19 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         except ObjectDoesNotExist:
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
+
+
+@permission_required('admin.can_add_log_entry')
+def census_download(request):
+    items = Census.objects.all()
+
+    response = HttpResponse(content_type='text/csv')
+    response ['Content-Disposition'] = 'attachment; filename ="census.csv"'
+
+    writer = csv.writer(response, delimiter=',')
+    writer.writerow(['voting_id','voter_id'])
+
+    for obj in items:
+        writer.writerow([obj.voting_id, obj.voter_id])
+    return response
+
