@@ -1,4 +1,4 @@
-import random, os
+import random, csv
 from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIClient
@@ -74,13 +74,77 @@ class CensusTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
 
-    def test_csv_upload_success(self):
-        myfile = open('census/test.csv','r') 
+    def test_csv_census_upload_success(self):
+
+        # Creating a temporal valid csv
+        myfile = open('test.csv', 'w')
+        wr = csv.writer(myfile)
+        wr.writerow(('voting_id','voter_id'))
+        wr.writerow((1,2))
+        wr.writerow((1,3))
+        wr.writerow((1,4))
+        myfile.close()
+
+        myfile = open('test.csv','r') 
         response = self.client.post('/upload-csv/', {'file':myfile})
         self.assertEqual(response.status_code, 200)
 
-    def test_csv_upload_incorrectFileType(self):
-        myfile = open('census/tests.py','r') 
+    def test_csv_census_upload_incorrectDataType(self):
+
+        # Creating a temporal invalid csv
+        myfile = open('test_incorrect.csv', 'w')
+        wr = csv.writer(myfile)
+        wr.writerow(('voting_id','voter_id'))
+        wr.writerow(('aaa','bbb'))
+        wr.writerow(('aaa','ccc'))
+        wr.writerow(('aaa','ddd'))
+        myfile.close()
+
+        myfile = open('test_incorrect.csv','r') 
         response = self.client.post('/upload-csv/', {'file':myfile})
         self.assertEqual(response.status_code, 302)
-       
+
+    def test_txt_census_upload_success(self):
+        
+        # Creating a temporal valid txt
+        myfile = open('test.txt', 'w')
+        wr = csv.writer(myfile)
+        wr.writerow(('voting_id','voter_id'))
+        wr.writerow((1,2))
+        wr.writerow((1,3))
+        wr.writerow((1,4))
+        myfile.close()
+        
+        myfile = open('test.txt','r') 
+        response = self.client.post('/upload-csv/', {'file':myfile})
+        self.assertEqual(response.status_code, 200)
+
+    def test_txt_census_upload_incorrectDataType(self):
+
+        # Creating a temporal invalid txt
+        myfile = open('test_incorrect.txt', 'w')
+        wr = csv.writer(myfile)
+        wr.writerow(('voting_id','voter_id'))
+        wr.writerow(('aaa','bbb'))
+        wr.writerow(('aaa','ccc'))
+        wr.writerow(('aaa','ddd'))
+        myfile.close()
+
+        myfile = open('test_incorrect.txt','r') 
+        response = self.client.post('/upload-csv/', {'file':myfile})
+        self.assertEqual(response.status_code, 302)
+
+    def test_census_upload_unsupportedFileType(self):
+
+        # Creating a temporal invalid txt
+        myfile = open('test.py', 'w')
+        wr = csv.writer(myfile)
+        wr.writerow(('voting_id','voter_id'))
+        wr.writerow(('aaa','bbb'))
+        wr.writerow(('aaa','ccc'))
+        wr.writerow(('aaa','ddd'))
+        myfile.close()
+
+        myfile = open('test.py','r') 
+        response = self.client.post('/upload-csv/', {'file':myfile})
+        self.assertEqual(response.status_code, 302)
