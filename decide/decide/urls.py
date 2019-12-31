@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('doc/', schema_view),
     path('gateway/', include('gateway.urls')),
-    path('upload-csv/', census_upload, name="census_upload"),
+    path('census-upload/', census_upload, name="census_upload"),
 ]
 
 for module in settings.MODULES:

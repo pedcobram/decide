@@ -60,7 +60,8 @@ def census_upload(request):
     template = "census_upload.html"
 
     prompt = {
-        'order': 'Order of the CSV should be voting_id, voter_id'
+        'supported_files': 'Supported files are: CSV, TXT',
+        'order': 'Order of the uploaded file should be voting_id, voter_id'
     }
 
     if request.method == "GET":

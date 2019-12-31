@@ -21,7 +21,10 @@
 
             {% endfor %}
         {% else %}
-            {{order}}
+            <div> 
+                <p>{{supported_files}}</p>
+                <p>{{order}}</p>
+            </div>
             <div style="margin: auto; width: 50%; padding: 10px;">
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
