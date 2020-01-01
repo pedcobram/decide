@@ -52,17 +52,5 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         return Response('Valid voter')
 
 
-@permission_required('admin.can_add_log_entry')
-def census_download(request):
-    items = Census.objects.all()
 
-    response = HttpResponse(content_type='text/csv')
-    response ['Content-Disposition'] = 'attachment; filename ="census.csv"'
-
-    writer = csv.writer(response, delimiter=',')
-    writer.writerow(['voting_id','voter_id'])
-
-    for obj in items:
-        writer.writerow([obj.voting_id, obj.voter_id])
-    return response
 
