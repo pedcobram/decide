@@ -55,7 +55,7 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
 
-@permission_required('admin.can_add_log_entry')
+#@permission_required('admin.can_add_log_entry')
 def census_copy(request):
     template = 'census_copy.html'
     census_list = Census.objects.all()
@@ -69,38 +69,42 @@ def census_copy(request):
     new_voting_id = request.POST.get('new_voting_id')
     copy_voting_id = request.POST.get('copy_voting_id')
     genero = request.POST.get('genero')
-    exists = False
-    for c in census_list:
-        if c.voting_id == int(new_voting_id):
-            messages.error(request,"That census already exists")
-            return render(request,template,context)
-        if c.voting_id == int(copy_voting_id):
-            if not exists:
-                exists = True
-            if genero == 'masculino' and c.genero == 'Masculino':
-                census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
-                fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
-                provincia = c.provincia, localidad = c.localidad)
-                census.save()
-            if genero == 'femenino' and c.genero == 'Femenino':
-                census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
-                fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
-                provincia = c.provincia, localidad = c.localidad)
-                census.save()
-            if genero == 'both':
-                census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
-                fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
-                provincia = c.provincia, localidad = c.localidad)
-                census.save()
-    
-    if not exists:
-        messages.error(request,"There is no census refered to that Voting_id")
- 
-    census_list2 = Census.objects.all()
-    sl = len(census_list2)
-    context = {'census_list': census_list2, 'voting_list':voting_list}
-    if sl != fl:
-        context['success'] = 'Census have been created successfully'
+
+    if new_voting_id == None or copy_voting_id == None or genero == None:
+        return render(request,template,context,status=ST_401)
     else:
-        context['warning'] = 'There are no users with that gender'
-    return render(request, template, context)
+        exists = False
+        for c in census_list:
+            if c.voting_id == int(new_voting_id):
+                messages.error(request,"That census already exists")
+                return render(request,template,context)
+            if c.voting_id == int(copy_voting_id):
+                if not exists:
+                    exists = True
+                if genero == 'masculino' and c.genero == 'Masculino':
+                    census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
+                    fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
+                    provincia = c.provincia, localidad = c.localidad)
+                    census.save()
+                if genero == 'femenino' and c.genero == 'Femenino':
+                    census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
+                    fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
+                    provincia = c.provincia, localidad = c.localidad)
+                    census.save()
+                if genero == 'both':
+                    census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
+                    fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
+                    provincia = c.provincia, localidad = c.localidad)
+                    census.save()
+        
+        if not exists:
+            messages.error(request,"There is no census refered to that Voting_id")
+    
+        census_list2 = Census.objects.all()
+        sl = len(census_list2)
+        context = {'census_list': census_list2, 'voting_list':voting_list}
+        if sl != fl:
+            context['success'] = 'Census have been created successfully'
+        else:
+            context['warning'] = 'There are no users with that gender'
+        return render(request, template, context)
