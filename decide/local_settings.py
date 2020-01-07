@@ -13,6 +13,8 @@ MODULES = [
     'voting',
 ]
 
+BASEURL = 'http://localhost:8000'
+
 APIS = {
     'authentication': 'http://localhost:8000',
     'base': 'http://localhost:8000',
@@ -24,8 +26,6 @@ APIS = {
     'visualizer': 'http://localhost:8000',
     'voting': 'http://localhost:8000',
 }
-
-BASEURL = 'http://localhost:8000'
 
 DATABASES = {
     'default': {
@@ -40,3 +40,6 @@ DATABASES = {
 
 # number of bits for the key, all auths should use the same number of bits
 KEYBITS = 256
+
+import django_heroku
+django_heroku.settings(locals())
