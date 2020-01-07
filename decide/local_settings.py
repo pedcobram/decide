@@ -33,13 +33,10 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'decide',
 	'PASSWORD': 'decide',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
 # number of bits for the key, all auths should use the same number of bits
 KEYBITS = 256
-
-import django_heroku
-django_heroku.settings(locals())
