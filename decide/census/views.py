@@ -73,38 +73,53 @@ def census_copy(request):
     if new_voting_id == None or copy_voting_id == None or genero == None:
         return render(request,template,context,status=ST_401)
     else:
-        exists = False
-        for c in census_list:
-            if c.voting_id == int(new_voting_id):
-                messages.error(request,"That census already exists")
-                return render(request,template,context)
-            if c.voting_id == int(copy_voting_id):
-                if not exists:
-                    exists = True
-                if genero == 'masculino' and c.genero == 'Masculino':
-                    census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
-                    fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
-                    provincia = c.provincia, localidad = c.localidad)
-                    census.save()
-                if genero == 'femenino' and c.genero == 'Femenino':
-                    census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
-                    fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
-                    provincia = c.provincia, localidad = c.localidad)
-                    census.save()
-                if genero == 'both':
-                    census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
-                    fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
-                    provincia = c.provincia, localidad = c.localidad)
-                    census.save()
-        
-        if not exists:
-            messages.error(request,"There is no census refered to that Voting_id")
+        if new_voting_id == copy_voting_id:
+            messages.error(request,'It is the same census')
+            return render(request,template,context)
+        voting_exists = False
+        for voting in voting_list:
+            if voting.id == int(new_voting_id):
+                voting_exists = True
+                break
+        if voting_exists:
+            census_exists = False
+            for c in census_list:
+                if c.voting_id == int(copy_voting_id):
+                    if not census_exists:
+                        census_exists = True
+                    if genero == 'masculino' and c.genero == 'Masculino':
+                        try:
+                            census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
+                            fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
+                            provincia = c.provincia, localidad = c.localidad)
+                            census.save()
+                        except:
+                            context['warning'] = 'Some census already exists so they have not been created'
+                    if genero == 'femenino' and c.genero == 'Femenino':
+                        try:
+                            census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
+                            fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
+                            provincia = c.provincia, localidad = c.localidad)
+                            census.save()
+                        except:
+                            context['warning'] = 'Some census already exists so they have not been created'
+                    if genero == 'both':
+                        try:
+                            census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
+                            fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
+                            provincia = c.provincia, localidad = c.localidad)
+                            census.save()
+                        except:
+                            context['warning'] = 'Some census already exists so they have not been created'
+            
+            if not census_exists:
+                messages.error(request,"There is no census refered to that copy_voting_id")
+        else:
+            messages.error(request,'There is no voting refered to that new_voting_id')
     
         census_list2 = Census.objects.all()
         sl = len(census_list2)
-        context = {'census_list': census_list2, 'voting_list':voting_list}
+        context['census_list'] = census_list2
         if sl != fl:
             context['success'] = 'Census have been created successfully'
-        else:
-            context['warning'] = 'There are no users with that gender'
         return render(request, template, context)
