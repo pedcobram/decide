@@ -17,7 +17,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_swagger.views import get_swagger_view
-from census.views import census_display, census_create_by_city,census_create_by_localidad ,census_create_by_age, census_create_by_genero, census_delete_by_city, census_delete_by_localidad ,census_delete_by_genero, get_all_provincias
+from census.views import census_display, census_create_by_city,census_create_by_localidad ,census_create_by_age, census_create_by_genero, census_delete_by_city, census_delete_by_localidad ,census_delete_by_genero, get_all_provincias,census_delete_by_age
 
 
 schema_view = get_swagger_view(title='Decide API')
@@ -35,6 +35,7 @@ urlpatterns = [
     #deleting census
     path('census_delete_by_city/<str:provincia>/', census_delete_by_city, name='census_delete_by_city'),
     path('census_delete_by_localidad/<str:localidad>/', census_delete_by_localidad, name='census_delete_by_localidad'),
+    path('census_delete_by_age/<int:edad_minima>/', census_delete_by_age, name='census_delete_by_age'),
     path('census_delete_by_genero/<str:genero>/', census_delete_by_genero, name='census_delete_by_genero'),
     #get elements
     path('get_all_provincias/', get_all_provincias, name='get_all_provincias'),

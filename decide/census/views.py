@@ -95,10 +95,7 @@ def census_display(request):
 @permission_required('admin.can_add_log_entry')
 def census_create_by_city(request, voting_id, provincia):
 
-    print("Provincia: "+provincia)
-
     users_set = DecideUser.objects.filter(provincia=provincia)
-
 
     for user in users_set:
 
@@ -161,6 +158,25 @@ def census_create_by_age(request, voting_id, edad_minima):
 
     return HttpResponse('<h1>POST BY AGE</h1>')
 
+@permission_required('admin.can_add_log_entry')
+def census_delete_by_age(request, edad_minima):
+    census_set = Census.objects.all()
+
+    for census in census_set:
+        fecha_nacimiento = census.fecha_nacimiento
+        fecha_actual = date.today()
+        #fd_a = user.fecha_nacimiento.strftime("%d/%m/%Y")
+        #date_now = date.today().strftime("%d/%m/%Y")
+        #print("Fecha de nacimiento: "+str(fd_a))
+        #print("Date now: "+str(date_now))
+        years = fecha_actual.year- fecha_nacimiento.year -((fecha_actual.month,fecha_actual.day)<(fecha_nacimiento.month,fecha_nacimiento.day))
+        print("Years: "+str(years))
+        print("Fecha de nacimiento: "+str(fecha_nacimiento))
+
+        if years>=edad_minima:
+            census.delete()
+
+    return HttpResponse('<h1>DELETE BY AGE</h1>')
 
 @permission_required('admin.can_add_log_entry')
 def census_create_by_genero(request, voting_id, genero):
@@ -189,17 +205,13 @@ def get_all_provincias(request):
     for user in users_set:
         provincia = user.provincia
         print("Provincia: "+provincia)
-        '''
+
         if provincia not in provincias:
             print("Provincias: "+str(provincias))
             provincias.append(user.provincia)
-        '''
-        provincias.append(user.provincia)
-    
-    np.unique(provincias)
+        
     print("Provincias: "+str(provincias))        
     
-
     return HttpResponse({"provincias":provincias})
 
 

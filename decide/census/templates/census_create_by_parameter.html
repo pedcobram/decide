@@ -4,8 +4,15 @@
 <script>
 function f_provincia_add(){
     var voting_id = document.getElementById("voting_id").value
+
+    if(voting_id!=0){
     var provincia = document.getElementById("provincia").value
+    print("prov: "+provincia)  
     url = "http://127.0.0.1:8000/census_create_by_city/"+voting_id+"/"+provincia+"/"
+    
+    }else{
+    url = "http://127.0.0.1:8000/admin/census/census/"
+    }
     return window.location.href=url
 }
 
@@ -17,8 +24,12 @@ function f_provincia_delete(){
 
 function f_localidad_add(){
     var voting_id = document.getElementById("voting_id").value
+    if(voting_id!=0){
     var localidad = document.getElementById("localidad").value
     url = "http://127.0.0.1:8000/census_create_by_localidad/"+voting_id+"/"+localidad+"/"
+    }else{
+    url = "http://127.0.0.1:8000/admin/census/census/"
+    }
     return window.location.href=url
 }
 
@@ -28,17 +39,31 @@ function f_localidad_delete(){
     return window.location.href=url
 }
 
-function f_edad(){
+function f_edad_add(){
     var voting_id = document.getElementById("voting_id").value
+    if(voting_id!=0){
     var edad= document.getElementById("edad").value
     url = "http://127.0.0.1:8000/census_create_by_age/"+voting_id+"/"+edad+"/"
+    }else{
+    url = "http://127.0.0.1:8000/admin/census/census/"
+    }
+    return window.location.href=url
+}
+
+function f_edad_delete(){
+    var edad= document.getElementById("edad").value
+    url = "http://127.0.0.1:8000/census_delete_by_age/"+edad+"/"
     return window.location.href=url
 }
 
 function f_genero_add(){
     var voting_id = document.getElementById("voting_id").value
+    if(voting_id!=0){
     var genero= document.getElementById("genero").value
     url = "http://127.0.0.1:8000/census_create_by_genero/"+voting_id+"/"+genero+"/"
+    }else{
+    url = "http://127.0.0.1:8000/admin/census/census/"
+    }
     return window.location.href=url
 }
 
@@ -48,8 +73,6 @@ function f_genero_delete(){
     return window.location.href=url
 }
 
-
-
 </script>
 
 <h1>Añadir censos: </h1>
@@ -57,35 +80,51 @@ function f_genero_delete(){
 <input type="number" name="voting_id" id="voting_id" required></p>
 
 </p><label><b>Por provincia: </b></label>
-<input  type="text" name="provincia" id="provincia" required>
+<select id="provincia" name="provincia">
+    <option value="sevilla" selected>sevilla</option>
+    <option value="malaga">malaga</option>
+    <option value="cadiz">cadiz</option>
+    <option value="huelva">huelva</option>
+    <option value="jaen">jaen</option>
+    <option value="almeria">almeria</option>
+    <option value="granada">granada</option>
+    <option value="cordoba">cordoba</option>
+</select>
+
 <button><a href="javascript:f_provincia_add()">Añadir por provincia</a></button>
 <button><a href="javascript:f_provincia_delete()">Eliminar por provincia</a></button></p>
 
 <p><label><b>Por localidad: </b></label>
-<input  type="text" name="localidad" id="localidad" required>
+
+<select id="localidad" name="localidad">
+    <option value="sevilla" selected>sevilla</option>
+    <option value="malaga">malaga</option>
+    <option value="cadiz">cadiz</option>
+    <option value="huelva">huelva</option>
+    <option value="jaen">jaen</option>
+    <option value="almeria">almeria</option>
+    <option value="granada">granada</option>
+    <option value="cordoba">cordoba</option>
+</select>
+
 <button><a href="javascript:f_localidad_add()">Añadir por localidad</a></button>
 <button><a href="javascript:f_localidad_delete()">Eliminar por localidad</a></button></p>
 
 <p><label><b>Por edad, mayores de: </b></label>
 <input type="number" name="edad" id="edad" required>
-<button><a href="javascript:f_edad()">Añadir por edad</a></button></p>
+<button><a href="javascript:f_edad_add()">Añadir por edad</a></button>
+<button><a href="javascript:f_edad_delete()">Eliminar por edad</a></button></p>
 
 <p><label><b>Por genero: </b></label>
-<input type="text" name="genero" id="genero" required>
+<select id="genero" name="genero">
+    <option value="femenino">femenino</option>
+    <option value="masculino">masculino</option>
+</select>
+
 <button><a href="javascript:f_genero_add()">Añadir por genero</a></button>
 <button><a href="javascript:f_genero_delete()">Eliminar por genero</a></button></p>
 <p></p>
 
-<!--<select>
-{%for provincia in provincias%}
-
-<option value="{{provincia}}">{{provincia}}</option>
-
-{% endfor %}
-
-</select>-->
-
 
 {{block.super}}
-
 {% endblock object-tools %}
