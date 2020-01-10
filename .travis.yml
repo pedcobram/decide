@@ -18,6 +18,6 @@ install:
 script:
   - cd decide
   - python3 ./manage.py makemigrations
-  - python3 ./manage.py migrate --fake default
+  - python3 ./manage.py migrate --run-syncdb
   - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
 
