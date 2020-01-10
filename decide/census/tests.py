@@ -87,6 +87,29 @@ class CensusTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
 
+    def test_census_display_show_ok(self):
+        response = self.client.get('/admin/census-display/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_census_display_create_ok(self):
+        data = {'voting_id':2,'voter_id':3}
+        response = self.client.post('/admin/census-display/',data)            
+        self.assertEqual(response.status_code,200)
+
+    def test_census_display_create_fail_both_empty(self):
+        response = self.client.post('/admin/census-display/')            
+        self.assertEqual(response.status_code,401)
+
+    def test_census_display_create_fail_voter_empty(self):
+        data = {'voting_id':2}
+        response = self.client.post('/admin/census-display/',data)            
+        self.assertEqual(response.status_code,401)
+
+    def test_census_display_create_fail_voting_empty(self):
+        data = {'voter_id':3}
+        response = self.client.post('/admin/census-display/',data)            
+        self.assertEqual(response.status_code,401)
+        
     def test_csv_census_upload_success(self):
 
         census_number_preOp = Census.objects.count()
@@ -161,3 +184,4 @@ class CensusTestCase(BaseTestCase):
 
         self.assertEqual(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 302)
+
