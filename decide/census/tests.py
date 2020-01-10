@@ -91,11 +91,11 @@ class CensusTestCase(BaseTestCase):
 
     def test_export_csv_success(self):
         
-        census1= Census(voting_id=1, voter_id=7)
-        census2= Census(voting_id=2, voter_id=5)
-        census3= Census(voting_id=3, voter_id=9)
-        census4= Census(voting_id=8, voter_id=7)
-        ls = [census1,census2,census3]
+        census1= Census(voting_id=1, voter_id=7,fecha_nacimiento="1995-05-02" ,genero="masculino",provincia="Sevilla",localidad="Sevilla")
+        census2= Census(voting_id=2, voter_id=5,fecha_nacimiento="1998-05-08" ,genero="masculino",provincia="Sevilla",localidad="Sevilla")
+        census3= Census(voting_id=3, voter_id=9,fecha_nacimiento="1999-10-02" ,genero="femenino",provincia="Sevilla",localidad="Sevilla")
+        census4= Census(voting_id=8, voter_id=7,fecha_nacimiento="1993-07-04" ,genero="masculino",provincia="Málaga",localidad="Málaga")
+        ls = [census1,census2,census3,census4]
        
         for census in ls:
             census.save()
@@ -114,11 +114,11 @@ class CensusTestCase(BaseTestCase):
 
     def test_export_xml_success(self):
         
-        census1= Census(voting_id=2, voter_id=7)
-        census2= Census(voting_id=2, voter_id=5)
-        census3= Census(voting_id=2, voter_id=9)
-        census4= Censos(voting_id=4, voter id=5)
-        ls = [census1,census2,census3]
+        census1= Census(voting_id=1, voter_id=7,fecha_nacimiento="1995-05-02" ,genero="masculino",provincia="Sevilla",localidad="Sevilla")
+        census2= Census(voting_id=2, voter_id=5,fecha_nacimiento="1998-05-08" ,genero="masculino",provincia="Sevilla",localidad="Sevilla")
+        census3= Census(voting_id=3, voter_id=9,fecha_nacimiento="1999-10-02" ,genero="femenino",provincia="Sevilla",localidad="Sevilla")
+        census4= Census(voting_id=8, voter_id=7,fecha_nacimiento="1993-07-04" ,genero="masculino",provincia="Málaga",localidad="Málaga")
+        ls = [census1,census2,census3,census4]
        
         for census in ls:
             census.save()
