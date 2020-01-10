@@ -15,9 +15,10 @@ install:
   - pip install -r requirements.txt
   - pip install codacy-coverage
   - pip install flake8
-script:
+  - pip install xlwt
+stcript:
   - cd decide
+  - python3 ./manage.py makemigrations
+  - python3 ./manage.py migrate --run-syncdb
   - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-  - coverage xml
-  - python-codacy-coverage -r coverage.xml
-  
+
