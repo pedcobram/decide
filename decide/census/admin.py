@@ -9,9 +9,6 @@ import xlwt
 
 def export_csv(modeladmin,request, queryset):
 
-    #print(f'queryset --> {queryset}')
-   
-   
     items = queryset
 
     response = HttpResponse(content_type='text/csv')
