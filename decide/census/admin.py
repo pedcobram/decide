@@ -42,7 +42,7 @@ def export_xml(modeladmin,request, queryset):
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ['Voting_id', 'Voter_id',]
+    columns = ['Voting_id', 'Voter_id','Fecha_nacimiento','Genero','Provincia','Localidad']
 
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)

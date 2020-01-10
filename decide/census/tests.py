@@ -81,6 +81,7 @@ class CensusTestCase(BaseTestCase):
         census1= Census(voting_id=1, voter_id=7)
         census2= Census(voting_id=2, voter_id=5)
         census3= Census(voting_id=3, voter_id=9)
+        census4= Census(voting_id=8, voter_id=7)
         ls = [census1,census2,census3]
        
         for census in ls:
@@ -95,5 +96,23 @@ class CensusTestCase(BaseTestCase):
             #voting_id = row[0].all,
             #voter_id = row[1].all,
             #)
+        
+        self.assertEqual(response.status_code,200)
+
+    def test_export_xml_success(self):
+        
+        census1= Census(voting_id=2, voter_id=7)
+        census2= Census(voting_id=2, voter_id=5)
+        census3= Census(voting_id=2, voter_id=9)
+        census4= Censos(voting_id=4, voter id=5)
+        ls = [census1,census2,census3]
+       
+        for census in ls:
+            census.save()
+
+        queryset = Census.objects.all()
+        response = export_xml(None, None,queryset)
+        
+        reader= response.getvalue()
         
         self.assertEqual(response.status_code,200)
