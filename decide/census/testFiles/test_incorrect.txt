@@ -1,0 +1,2 @@
+voting_id,voter_id,birth_date,gender,city,town
+aaa,bbb,ccc,ddd,eee,fff
