@@ -12,11 +12,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='census',
-            name='fecha_nacimiento',
-            field=models.DateField(null=True),
-        ),
-        migrations.AddField(
-            model_name='census',
             name='genero',
             field=models.CharField(choices=[('M', 'Masculino'), ('F', 'Femenino')], max_length=10, null=True),
         ),
