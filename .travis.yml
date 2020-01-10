@@ -19,5 +19,5 @@ install:
 stcript:
   - cd decide
   - cp travis_local_settings.py local_settings.py
-  - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
+  - coverage run --branch --source=. ./manage.py test --keepdb
   - rm local_settings.py
