@@ -4,9 +4,11 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 
 from .models import Census
+from .admin import CensusAdmin
 from base import mods
 from base.tests import BaseTestCase
-
+from .admin import export_csv,export_xml
+import csv, io
 
 class CensusTestCase(BaseTestCase):
 
@@ -73,3 +75,25 @@ class CensusTestCase(BaseTestCase):
         response = self.client.delete('/census/{}/'.format(1), data, format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
+
+    def test_export_csv_success(self):
+        
+        census1= Census(voting_id=1, voter_id=7)
+        census2= Census(voting_id=2, voter_id=5)
+        census3= Census(voting_id=3, voter_id=9)
+        ls = [census1,census2,census3]
+       
+        for census in ls:
+            census.save()
+
+        queryset = Census.objects.all()
+        response = export_csv(None, None,queryset)
+        
+        reader= response.getvalue()
+        #for row in reader:
+            #created = Census.objects.update_or_create(
+            #voting_id = row[0].all,
+            #voter_id = row[1].all,
+            #)
+        
+        self.assertEqual(response.status_code,200)

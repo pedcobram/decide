@@ -9,24 +9,29 @@ import xlwt
 
 def export_csv(modeladmin,request, queryset):
 
+    #print(f'queryset --> {queryset}')
+   
+   
     items = queryset
 
     response = HttpResponse(content_type='text/csv')
     response ['Content-Disposition'] = 'attachment; filename ="census.csv"'
 
     writer = csv.writer(response, delimiter=',')
-    writer.writerow(['voting_id','voter_id'])
+    writer.writerow(['voting_id','voter_id','fecha_nacimiento','genero','provincia','localidad'])
 
     for obj in items:
-        writer.writerow([obj.voting_id, obj.voter_id])
+        writer.writerow([obj.voting_id, obj.voter_id,obj.fecha_nacimiento, obj.genero, obj.provincia, obj.localidad])
+
     return response
+    
 
 #export del censo como xml
 
 def export_xml(modeladmin,request, queryset):
 
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="censo.xls"'
+    response['Content-Disposition'] = 'attachment; filename="census.xls"'
 
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Census')
@@ -46,7 +51,7 @@ def export_xml(modeladmin,request, queryset):
 
     font_style = xlwt.XFStyle()
 
-    rows = queryset.values_list('voting_id', 'voter_id')
+    rows = queryset.values_list('voting_id', 'voter_id','fecha_nacimiento','genero','provincia','localidad')
 
     for row in rows:
         row_num += 1
@@ -63,6 +68,6 @@ class CensusAdmin(admin.ModelAdmin):
     actions = [export_csv,export_xml]
 
     search_fields = ('voter_id', )
-
+    
 
 admin.site.register(Census, CensusAdmin)
