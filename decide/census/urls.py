@@ -5,5 +5,5 @@ from census.views import census_display
 
 urlpatterns = [
     path('', views.CensusCreate.as_view(), name='census_create'),
-    path('<int:voting_id>/<str:provincia>/', views.CensusDetail.as_view(), name='census_detail'),
+    path('<int:voting_id>/', views.CensusDetail.as_view(), name='census_detail'),
 ]
