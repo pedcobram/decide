@@ -18,6 +18,6 @@ install:
 script:
   - cd decide
   #- coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-  - coverage xml
-  - python-codacy-coverage -r coverage.xml
+  #- coverage xml
+  #- python-codacy-coverage -r coverage.xml
   
