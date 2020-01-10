@@ -87,6 +87,34 @@ class CensusTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
 
+    def test_census_copy_show_ok(self):
+        response = self.client.get('/admin/census-copy/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_census_copy_create_ok(self):
+        data = {'new_voting_id':2,'copy_voting_id':3, 'genero':'both'}
+        response = self.client.post('/admin/census-copy/',data)            
+        self.assertEqual(response.status_code,200)
+
+    def test_census_copy_create_fail_all_empty(self):
+        response = self.client.post('/admin/census-copy/')            
+        self.assertEqual(response.status_code,401)
+
+    def test_census_copy_create_fail_new_voting_empty(self):
+        data = {'copy_voting_id':2,'genero':'masculino'}
+        response = self.client.post('/admin/census-copy/',data)            
+        self.assertEqual(response.status_code,401)
+
+    def test_census_copy_create_fail_copy_voting_empty(self):
+        data = {'new_voting_id':2,'genero':'masculino'}
+        response = self.client.post('/admin/census-copy/',data)            
+        self.assertEqual(response.status_code,401)
+
+    def test_census_copy_create_fail_genero_empty(self):
+        data = {'copy_voting_id':2,'new_voting_id':4}
+        response = self.client.post('/admin/census-copy/',data)            
+        self.assertEqual(response.status_code,401)
+
     def test_census_display_show_ok(self):
         response = self.client.get('/admin/census-display/')
         self.assertEqual(response.status_code, 200)
@@ -184,4 +212,3 @@ class CensusTestCase(BaseTestCase):
 
         self.assertEqual(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 302)
-

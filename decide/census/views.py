@@ -13,6 +13,7 @@ from rest_framework.status import (
 from base.perms import UserIsStaff
 from .models import Census
 from voting.models import Voting
+
 from authentication.models import DecideUser
 from django.shortcuts import render
 from django.contrib import messages
@@ -24,6 +25,7 @@ from django.contrib import messages
 import csv, io, argparse
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse, HttpResponseRedirect
+
 
 
 class CensusCreate(generics.ListCreateAPIView):
@@ -61,6 +63,75 @@ class CensusDetail(generics.RetrieveDestroyAPIView):
         except ObjectDoesNotExist:
             return Response('Invalid voter', status=ST_401)
         return Response('Valid voter')
+
+#@permission_required('admin.can_add_log_entry')
+def census_copy(request):
+    template = 'census_copy.html'
+    census_list = Census.objects.all()
+    fl = len(census_list)
+    voting_list = Voting.objects.all()
+    context = {'census_list': census_list, 'voting_list':voting_list}
+ 
+    if request.method == 'GET':
+        return render(request,template,context)
+ 
+    new_voting_id = request.POST.get('new_voting_id')
+    copy_voting_id = request.POST.get('copy_voting_id')
+    genero = request.POST.get('genero')
+
+    if new_voting_id == None or copy_voting_id == None or genero == None:
+        return render(request,template,context,status=ST_401)
+    else:
+        if new_voting_id == copy_voting_id:
+            messages.error(request,'It is the same census')
+            return render(request,template,context)
+        voting_exists = False
+        for voting in voting_list:
+            if voting.id == int(new_voting_id):
+                voting_exists = True
+                break
+        if voting_exists:
+            census_exists = False
+            for c in census_list:
+                if c.voting_id == int(copy_voting_id):
+                    if not census_exists:
+                        census_exists = True
+                    if genero == 'masculino' and c.genero == 'Masculino':
+                        try:
+                            census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
+                            fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
+                            provincia = c.provincia, localidad = c.localidad)
+                            census.save()
+                        except:
+                            context['warning'] = 'Some census already exists so they have not been created'
+                    if genero == 'femenino' and c.genero == 'Femenino':
+                        try:
+                            census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
+                            fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
+                            provincia = c.provincia, localidad = c.localidad)
+                            census.save()
+                        except:
+                            context['warning'] = 'Some census already exists so they have not been created'
+                    if genero == 'both':
+                        try:
+                            census = Census(voting_id = new_voting_id, voter_id = c.voter_id,
+                            fecha_nacimiento = c.fecha_nacimiento, genero = c.genero,
+                            provincia = c.provincia, localidad = c.localidad)
+                            census.save()
+                        except:
+                            context['warning'] = 'Some census already exists so they have not been created'
+            
+            if not census_exists:
+                messages.error(request,"There is no census refered to that copy_voting_id")
+        else:
+            messages.error(request,'There is no voting refered to that new_voting_id')
+    
+        census_list2 = Census.objects.all()
+        sl = len(census_list2)
+        context['census_list'] = census_list2
+        if sl != fl:
+            context['success'] = 'Census have been created successfully'
+        return render(request, template, context)
 
 def census_display(request):
     template = 'census_display.html'
@@ -161,4 +232,3 @@ def census_upload(request):
 
     context = {}
     return render(request, template, context)
-
