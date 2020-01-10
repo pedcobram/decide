@@ -18,5 +18,6 @@ install:
   - pip install xlwt
 stcript:
   - cd decide
+  - cp travis_local_settings.py local_settings.py
   - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-
+  - rm local_settings.py
