@@ -17,7 +17,7 @@ install:
   - pip install flake8
 script:
   - cd decide
+  - python3 ./manage.py makemigrations
+  - python3 ./manage.py migrate --run-syncdb
   - coverage run --branch --source=. ./manage.py test --keepdb --with-xunit
-  - coverage xml
-  - python-codacy-coverage -r coverage.xml
-  
+

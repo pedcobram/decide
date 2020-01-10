@@ -61,13 +61,16 @@ def export_xml(modeladmin,request, queryset):
     wb.save(response)
     return response
 
-
 class CensusAdmin(admin.ModelAdmin):
-    list_display = ('voting_id', 'voter_id')
-    list_filter = ('voting_id', )
+    
+    list_display = ('voting_id', 'voter_id','fecha_nacimiento','genero','provincia','localidad',)
+    list_filter = ('voting_id', 'fecha_nacimiento','genero','provincia','localidad',)
+    
     actions = [export_csv,export_xml]
 
-    search_fields = ('voter_id', )
-    
+    search_fields = ('voter_id', 'fecha_nacimiento','genero','provincia','localidad',)
+
+    change_list_template = 'census_create_by_parameter.html'
+
 
 admin.site.register(Census, CensusAdmin)
