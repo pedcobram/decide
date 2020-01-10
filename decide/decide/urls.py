@@ -19,6 +19,8 @@ from django.urls import path, include
 from rest_framework_swagger.views import get_swagger_view
 from census.views import census_copy
 
+from census.views import census_display
+from census.views import census_upload
 
 schema_view = get_swagger_view(title='Decide API')
 
@@ -27,6 +29,8 @@ urlpatterns = [
     path('doc/', schema_view),
     path('gateway/', include('gateway.urls')),
     path('admin/census-copy/',census_copy),
+    path('admin/census-display/',census_display),
+    path('census-upload/', census_upload, name="census_upload"),
 ]
 
 for module in settings.MODULES:
