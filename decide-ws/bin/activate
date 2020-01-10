@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/pedroc/Documentos/decide/decide/decide-ws"
+VIRTUAL_ENV="/home/pedroc/Documentos/decide/decide-ws"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
