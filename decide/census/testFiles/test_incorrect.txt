@@ -1,2 +1,2 @@
-voting_id,voter_id,birth_date,gender,city,town
+voting_id,voter_id,fecha_nacimiento,genero,ciudad,provincia
 aaa,bbb,ccc,ddd,eee,fff
