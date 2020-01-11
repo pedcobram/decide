@@ -193,7 +193,7 @@ def census_upload(request):
 
     if not(uploaded_file.name.endswith(".csv") or uploaded_file.name.endswith(".txt")):
         messages.error(request, 'This is not a csv or txt file, try again with a valid file format')
-        return HttpResponseRedirect('../upload-csv/')      
+        return HttpResponseRedirect('../census-upload/')      
 
     data_set = uploaded_file.read().decode('UTF-8')
     io_string = io.StringIO(data_set)
@@ -201,36 +201,58 @@ def census_upload(request):
 
     if(uploaded_file.name.endswith(".csv")):
         for column in csv.reader(io_string, delimiter=',', quotechar='|'):
-
-            if(column[0].isdigit() == False or column[1].isdigit() == False ): # or  column[2].isdigit == False or column[3].isdigit == True or column[4].isdigit == True or column[5].isdigit == True ):
+            
+            if(column[0].isdigit() == False or column[1].isdigit() == False or column[2].isdigit == False or column[3].isdigit == True or column[4].isdigit == True or column[5].isdigit == True ):
                         messages.error(request, 'Columns do not have the correct data type. Please correct the error and try again.')
-                        return HttpResponseRedirect('../upload-csv/') 
+                        return HttpResponseRedirect('../census-upload/') 
 
-            _, created = Census.objects.update_or_create(
-                voting_id = column[0],
-                voter_id = column[1]                
-                # birth_date = column[2],
-                # gender = column[3],
-                # city = column[4],
-                # town = column[5]
-            )
+            try:
+                go0 = Census.objects.get(voting_id=column[0],voter_id=column[1])
+            except ObjectDoesNotExist:
+                go0 = None   
+            
+                if(go0 == None):
+
+                    if(column[0].isdigit() == False or column[1].isdigit() == False or  column[2].isdigit == False or column[3].isdigit == True or column[4].isdigit == True or column[5].isdigit == True ):
+                        messages.error(request, 'Columns do not have the correct data type. Please correct the error and try again.')
+                        return HttpResponseRedirect('../census-upload/') 
+
+                    _, created = Census.objects.update_or_create(
+                    voting_id = column[0],
+                    voter_id = column[1],             
+                    fecha_nacimiento = column[2],
+                    genero = column[3],
+                    localidad = column[4],
+                    provincia = column[5]
+                    )
 
     if(uploaded_file.name.endswith(".txt")):
         for column in csv.reader(io_string, delimiter=',', quotechar='|'):
 
-            if(column[0].isdigit() == False or column[1].isdigit() == False ): # or  column[2].isdigit == False or column[3].isdigit == True or column[4].isdigit == True or column[5].isdigit == True ):
+            if(column[0].isdigit() == False or column[1].isdigit() == False or column[2].isdigit == False or column[3].isdigit == True or column[4].isdigit == True or column[5].isdigit == True ):
                         messages.error(request, 'Columns do not have the correct data type. Please correct the error and try again.')
-                        return HttpResponseRedirect('../upload-csv/') 
+                        return HttpResponseRedirect('../census-upload/') 
 
-            _, created = Census.objects.update_or_create(
-                voting_id = column[0],
-                voter_id = column[1]                
-                # birth_date = column[2],
-                # gender = column[3],
-                # city = column[4],
-                # town = column[5]
-                
-            )
+            try:
+                go0 = Census.objects.get(voting_id=column[0],voter_id=column[1])
+            except ObjectDoesNotExist:
+                go0 = None 
+
+                if(go0 == None):
+
+                    if(column[0].isdigit() == False or column[1].isdigit() == False or column[2].isdigit == False or column[3].isdigit == True or column[4].isdigit == True or column[5].isdigit == True ):
+                        messages.error(request, 'Columns do not have the correct data type. Please correct the error and try again.')
+                        return HttpResponseRedirect('../census-upload/') 
+
+                    _, created = Census.objects.update_or_create(
+                    voting_id = column[0],
+                    voter_id = column[1],             
+                    fecha_nacimiento = column[2],
+                    genero = column[3],
+                    localidad = column[4],
+                    provincia = column[5]
+                    )
+
 
     context = {}
     return render(request, template, context)

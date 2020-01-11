@@ -25,10 +25,10 @@ class CensusTestCase(BaseTestCase):
         try:
             myfile = open(file_name, 'w')
             wr = csv.writer(myfile)
-            wr.writerow(('voting_id','voter_id'))
-            wr.writerow((voting_id,voter_id1))
-            wr.writerow((voting_id,voter_id2))
-            wr.writerow((voting_id,voter_id3))
+            wr.writerow(('voting_id','voter_id','fecha_nacimiento','genero','provincia','localidad'))
+            wr.writerow((voting_id,voter_id1,'1990-12-20','Femenino','Sevilla','Sevilla'))
+            wr.writerow((voting_id,voter_id2,'2000-12-20','Femenino','Sevilla','Sevilla'))
+            wr.writerow((voting_id,voter_id3,'2013-12-20','Femenino','Cordoba','Cordoba'))
         finally:
             myfile.close()
 
@@ -247,6 +247,21 @@ class CensusTestCase(BaseTestCase):
 
         # Creating a temporal invalid txt
         myfile = self.generate_file('test.py',1,2,3,4)
+        file_path = myfile.name
+        f = open(file_path, "r")
+
+        response = self.client.post('/census-upload/', {'file':f})
+        census_number_postOp = Census.objects.count()
+
+        self.assertEqual(census_number_postOp, census_number_preOp)
+        self.assertEqual(response.status_code, 302)
+    
+    def test_census_duplicated_key(self):
+
+        census_number_preOp = Census.objects.count()
+
+        # Creating a temporal invalid txt
+        myfile = self.generate_file('test.py',1,2,2,2)
         file_path = myfile.name
         f = open(file_path, "r")
 
