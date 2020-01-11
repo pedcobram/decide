@@ -20,5 +20,5 @@ stcript:
   - cd decide
   - cp travis_local_settings.py local_settings.py
   #- coverage run --branch --source=. ./manage.py test --keepdb
-  ./manage.py test
+  - ./manage.py test
   - rm local_settings.py
