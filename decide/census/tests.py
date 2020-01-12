@@ -11,7 +11,7 @@ from .admin import export_csv,export_xml
 import csv, io
 
 class CensusTestCase(BaseTestCase):
-
+    
     def setUp(self):
         super().setUp()
         self.census = Census(voting_id=1, voter_id=1)
@@ -184,7 +184,6 @@ class CensusTestCase(BaseTestCase):
     def test_csv_census_upload_success(self):
 
         census_number_preOp = Census.objects.count()
-
         # Creating a temporal valid csv
         myfile = self.generate_file('test.csv',1,2,3,4)
         file_path = myfile.name
@@ -255,6 +254,20 @@ class CensusTestCase(BaseTestCase):
 
         self.assertEqual(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 302)
+
+    def test_census_create (self):
+        response = self.client.post('/census_create_by_city/')
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.post('/census_create_by_localidad/')
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.post('/census_create_by_age/')
+        self.assertEqual(response.status_code, 404)
+
+        response = self.client.post('/census_create_by_genero')
+        self.assertEqual(response.status_code, 404)
+
     
     def test_census_duplicated_key(self):
 
@@ -270,3 +283,4 @@ class CensusTestCase(BaseTestCase):
 
         self.assertEqual(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 302)
+
