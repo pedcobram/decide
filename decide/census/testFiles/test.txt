@@ -1,0 +1,7 @@
+voting_id,voter_id,fecha_nacimiento,genero,ciudad,provincia
+2,2,1997-01-11,Masculino,Sevilla,Sevilla
+2,3,1997-01-11,Masculino,Sevilla,Sevilla
+4,3,2002-04-29,Femenino,Malaga,Malaga
+1,23,1997-10-03,Masculino,Cadiz,Cadiz
+2,23,1997-10-03,Masculino,Cadiz,Cadiz
+6,5,1997-10-03,Masculino,Cadiz,Cadiz

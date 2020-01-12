@@ -1,0 +1,2 @@
+voting_id,voter_id,fecha_nacimiento,genero,ciudad,provincia
+aaa,bbb,ccc,ddd,eee,fff
