@@ -8,7 +8,11 @@ function f_add_provincia(){
     var provincia = document.getElementById("provincia").value
     print("provincia: "+provincia)
 
-    url = "http://127.0.0.1:8000/census_create_by_city/"+voting_id+"/"+provincia+"/"
+    if(voting_id != 0 || provincia != ""){
+        url = "http://127.0.0.1:8000/census_create_by_city/"+voting_id+"/"+provincia+"/"
+    }else{
+        url = "http://127.0.0.1:8000/admin/census/census/"
+    }
 
     return window.location.href=url
 
@@ -18,7 +22,11 @@ function f_delete_provincia(){
     var provincia = document.getElementById("provincia").value
     print("provincia: "+provincia)
 
-    url = "http://127.0.0.1:8000/census_delete_by_city/"+provincia+"/"
+    if(provincia != " "){
+        url = "http://127.0.0.1:8000/census_delete_by_city/"+provincia+"/"
+    }else{
+        url = "http://127.0.0.1:8000/admin/census/census/"
+    }
 
     return window.location.href=url
 
@@ -30,8 +38,11 @@ function f_add_localidad(){
     var localidad = document.getElementById("localidad").value
     print("localidad: "+localidad)
 
-    url = "http://127.0.0.1:8000/census_create_by_localidad/"+voting_id+"/"+localidad+"/"
-
+    if(voting_id != 0 || localidad != ""){
+        url = "http://127.0.0.1:8000/census_create_by_localidad/"+voting_id+"/"+localidad+"/"
+    }else{
+        url = "http://127.0.0.1:8000/admin/census/census/"
+    }
     return window.location.href=url
 }
 
@@ -39,7 +50,11 @@ function f_delete_localidad(){
     var localidad = document.getElementById("localidad").value
     print("localidad: "+localidad)
 
-    url = "http://127.0.0.1:8000/census_delete_by_localidad/"+localidad+"/"
+    if(localidad!=" "){
+        url = "http://127.0.0.1:8000/census_delete_by_localidad/"+localidad+"/"
+    }else{
+        url = "http://127.0.0.1:8000/admin/census/census/"
+    }
 
     return window.location.href=url
 
@@ -49,9 +64,13 @@ function f_add_edad(){
     var voting_id = document.getElementById("voting_id").value
     print("voting_id: "+voting_id)
     var edad= document.getElementById("edad").value
-    print("edad: "+edad)
+    print("edad: "+str(edad))
 
-    url = "http://127.0.0.1:8000/census_create_by_age/"+voting_id+"/"+edad+"/"
+    if(voting_id!=0 || edad != 0 ){
+        url = "http://127.0.0.1:8000/census_create_by_age/"+voting_id+"/"+edad+"/"
+    }else{
+        url = "http://127.0.0.1:8000/admin/census/census/"
+    }
 
     return window.location.href=url
 
@@ -59,20 +78,29 @@ function f_add_edad(){
 
 function f_delete_edad(){
     var edad= document.getElementById("edad").value
-    print("edad: "+edad)
+    print("edad: "+str(edad))
 
-    url = "http://127.0.0.1:8000/census_delete_by_age/"+edad+"/"
-
+    if(edad !=0){
+        url = "http://127.0.0.1:8000/census_delete_by_age/"+edad+"/"
+    }else{
+        url = "http://127.0.0.1:8000/admin/census/census/"
+    }
     return window.location.href=url
 }
 
 function f_add_genero(){
     var voting_id = document.getElementById("voting_id").value
     print("voting_id: "+voting_id)
+
     var genero= document.getElementById("genero").value
     print("genero: "+genero)
 
-    url = "http://127.0.0.1:8000/census_create_by_genero/"+voting_id+"/"+genero+"/"
+    
+    if(voting_id!=0){
+        url = "http://127.0.0.1:8000/census_create_by_genero/"+voting_id+"/"+genero+"/"
+    }else{
+        url = "http://127.0.0.1:8000/admin/census/census/"
+    }
 
     return window.location.href=url
 
@@ -82,8 +110,11 @@ function f_delete_genero(){
     var genero= document.getElementById("genero").value
     print("genero: "+genero)
 
-    url = "http://127.0.0.1:8000/census_delete_by_genero/"+genero+"/"
-
+    if(genero != " "){
+        url = "http://127.0.0.1:8000/census_delete_by_genero/"+genero+"/"
+    }else{
+        url = "http://127.0.0.1:8000/admin/census/census/"
+    }
     return window.location.href=url
 
 }
