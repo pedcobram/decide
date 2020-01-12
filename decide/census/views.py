@@ -162,11 +162,3 @@ def census_create_by_genero(request, voting_id, genero):
             provincia = user.provincia, localidad = user.localidad)
         census.save()
     return HttpResponse('<h1>POST BY GENERO</h1>')
-
-
-
-
-
-
-
-

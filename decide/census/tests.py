@@ -73,8 +73,6 @@ class CensusTestCase(BaseTestCase):
         response = self.client.delete('/census/{}/'.format(1), data, format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
-<<<<<<< HEAD
-=======
 
     def test_census_copy_show_ok(self):
         response = self.client.get('/admin/census-copy/')
@@ -201,4 +199,3 @@ class CensusTestCase(BaseTestCase):
 
         self.assertEqual(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 302)
->>>>>>> parent of d348291... Update tests.py
