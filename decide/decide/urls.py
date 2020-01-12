@@ -30,18 +30,6 @@ urlpatterns = [
     path('gateway/', include('gateway.urls')),
     path('admin/census-copy/',census_copy),
     path('admin/census-display/',census_display),
-    path('census_create_by_city/<str:provincia>/', census_create_by_city, name='census_create_by_city'),
-    path('census_create_by_city/<int:voting_id>/<str:provincia>/', census_create_by_city, name='census_create_by_city'),
-    path('census_delete_by_city/<str:provincia>/', census_delete_by_city, name='census_delete_by_city'),
-    path('census_create_by_localidad/<str:localidad>/', census_create_by_localidad, name='census_create_by_localidad'),
-    path('census_create_by_localidad/<int:voting_id>/<str:localidad>/', census_create_by_localidad, name='census_create_by_localidad'),
-    path('census_delete_by_localidad/<str:localidad>/', census_delete_by_localidad, name='census_delete_by_localidad'),
-    path('census_create_by_age/<int:edad_minima>/', census_create_by_age, name='census_create_by_age'),
-    path('census_create_by_age/<int:voting_id>/<int:edad_minima>/', census_create_by_age, name='census_create_by_age'),
-    path('census_delete_by_age/<int:edad_minima>/', census_delete_by_age, name='census_delete_by_age'),
-    path('census_create_by_genero/<str:genero>/', census_create_by_genero, name='census_create_by_age'),
-    path('census_create_by_genero/<int:voting_id>/<str:genero>/', census_create_by_genero, name='census_create_by_age'),
-    path('census_delete_by_genero/<str:genero>/', census_delete_by_genero, name='census_delete_by_genero'),
     path('census-upload/', census_upload, name="census_upload"),
 ]
 
