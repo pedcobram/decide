@@ -17,17 +17,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='census',
-            name='genero',
-            field=models.CharField(choices=[('Masculino', 'Masculino'), ('Femenino', 'Femenino')], max_length=10, null=True),
-        ),
-        migrations.AddField(
-            model_name='census',
             name='localidad',
-            field=models.CharField(max_length=20, null=True),
-        ),
-        migrations.AddField(
-            model_name='census',
-            name='provincia',
             field=models.CharField(max_length=20, null=True),
         ),
     ]
