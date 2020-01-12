@@ -8,11 +8,9 @@ function f_add_provincia(){
     var provincia = document.getElementById("provincia").value
     print("provincia: "+provincia)
 
-    if(voting_id != 0 || provincia != ""){
-        url = "http://127.0.0.1:8000/census_create_by_city/"+voting_id+"/"+provincia+"/"
-    }else{
-        url = "http://127.0.0.1:8000/admin/census/census/"
-    }
+ 
+    url = "http://127.0.0.1:8000/census_create_by_city/"+voting_id+"/"+provincia+"/"
+    
 
     return window.location.href=url
 
@@ -22,11 +20,7 @@ function f_delete_provincia(){
     var provincia = document.getElementById("provincia").value
     print("provincia: "+provincia)
 
-    if(provincia != " "){
-        url = "http://127.0.0.1:8000/census_delete_by_city/"+provincia+"/"
-    }else{
-        url = "http://127.0.0.1:8000/admin/census/census/"
-    }
+    url = "http://127.0.0.1:8000/census_delete_by_city/"+provincia+"/"
 
     return window.location.href=url
 
@@ -38,11 +32,8 @@ function f_add_localidad(){
     var localidad = document.getElementById("localidad").value
     print("localidad: "+localidad)
 
-    if(voting_id != 0 || localidad != ""){
-        url = "http://127.0.0.1:8000/census_create_by_localidad/"+voting_id+"/"+localidad+"/"
-    }else{
-        url = "http://127.0.0.1:8000/admin/census/census/"
-    }
+    url = "http://127.0.0.1:8000/census_create_by_localidad/"+voting_id+"/"+localidad+"/"
+
     return window.location.href=url
 }
 
@@ -50,11 +41,7 @@ function f_delete_localidad(){
     var localidad = document.getElementById("localidad").value
     print("localidad: "+localidad)
 
-    if(localidad!=" "){
-        url = "http://127.0.0.1:8000/census_delete_by_localidad/"+localidad+"/"
-    }else{
-        url = "http://127.0.0.1:8000/admin/census/census/"
-    }
+    url = "http://127.0.0.1:8000/census_delete_by_localidad/"+localidad+"/"
 
     return window.location.href=url
 
@@ -64,43 +51,29 @@ function f_add_edad(){
     var voting_id = document.getElementById("voting_id").value
     print("voting_id: "+voting_id)
     var edad= document.getElementById("edad").value
-    print("edad: "+str(edad))
+    print("edad: "+edad)
 
-    if(voting_id!=0 || edad != 0 ){
-        url = "http://127.0.0.1:8000/census_create_by_age/"+voting_id+"/"+edad+"/"
-    }else{
-        url = "http://127.0.0.1:8000/admin/census/census/"
-    }
+    url = "http://127.0.0.1:8000/census_create_by_age/"+voting_id+"/"+edad+"/"
 
     return window.location.href=url
-
 }
 
 function f_delete_edad(){
     var edad= document.getElementById("edad").value
-    print("edad: "+str(edad))
+    print("edad: "+edad)
 
-    if(edad !=0){
-        url = "http://127.0.0.1:8000/census_delete_by_age/"+edad+"/"
-    }else{
-        url = "http://127.0.0.1:8000/admin/census/census/"
-    }
+    url = "http://127.0.0.1:8000/census_delete_by_age/"+edad+"/"
+
     return window.location.href=url
 }
 
 function f_add_genero(){
     var voting_id = document.getElementById("voting_id").value
     print("voting_id: "+voting_id)
-
     var genero= document.getElementById("genero").value
     print("genero: "+genero)
 
-    
-    if(voting_id!=0){
-        url = "http://127.0.0.1:8000/census_create_by_genero/"+voting_id+"/"+genero+"/"
-    }else{
-        url = "http://127.0.0.1:8000/admin/census/census/"
-    }
+    url = "http://127.0.0.1:8000/census_create_by_genero/"+voting_id+"/"+genero+"/"
 
     return window.location.href=url
 
@@ -110,11 +83,8 @@ function f_delete_genero(){
     var genero= document.getElementById("genero").value
     print("genero: "+genero)
 
-    if(genero != " "){
-        url = "http://127.0.0.1:8000/census_delete_by_genero/"+genero+"/"
-    }else{
-        url = "http://127.0.0.1:8000/admin/census/census/"
-    }
+    url = "http://127.0.0.1:8000/census_delete_by_genero/"+genero+"/"
+
     return window.location.href=url
 
 }
@@ -144,7 +114,7 @@ function f_delete_genero(){
 <p><label><b>Por genero: </b></label>
 <input type="text" name="genero" id="genero" required>
 <button><a href="javascript:f_add_genero()">Añadir por genero</a></button>
-<button><a href="javascript:f_delete_genero()">Eliminar por genero</a></button></p>
+<button><a href="javascript:f_add_genero()">Eliminar por genero</a></button></p>
 
 
 <p></p>
