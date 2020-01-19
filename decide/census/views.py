@@ -303,6 +303,8 @@ def census_create_by_localidad(request, voting_id, localidad):
 def census_delete_by_localidad(request, localidad):
     census_set = Census.objects.filter(localidad=localidad)
 
+    print("Localidad: "+localidad)
+
     for census in census_set:
         census.delete()
     message = messages.success(request,'successfully deleted by localidad')
@@ -342,7 +344,9 @@ def census_delete_by_age(request, edad_minima):
 
     for census in census_set:
         fecha_nacimiento = census.fecha_nacimiento
+        print("f_nac: "+str(fecha_nacimiento))
         fecha_actual = date.today()
+        print("f_act: "+str(fecha_actual))
         #fd_a = user.fecha_nacimiento.strftime("%d/%m/%Y")
         #date_now = date.today().strftime("%d/%m/%Y")
         #print("Fecha de nacimiento: "+str(fd_a))
