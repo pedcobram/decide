@@ -267,7 +267,7 @@ def census_create_by_city(request, voting_id, provincia):
 
     for user in users_set:
 
-        census = Census.create_or_update(voting_id = voting_id, voter_id = user.id, 
+        census = Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
         #census.save()
@@ -288,7 +288,7 @@ def census_create_by_localidad(request, voting_id, localidad):
 
     for user in users_set:
 
-        census = Census(voting_id = voting_id, voter_id = user.id, 
+        census =  Census.objects.create_or_update(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
         census.save()
@@ -322,7 +322,7 @@ def census_create_by_age(request, voting_id, edad_minima):
         print("Fecha de nacimiento: "+str(fecha_nacimiento))
 
         if years>=edad_minima:
-            census = Census(voting_id = voting_id, voter_id = user.id, 
+            census =  Census.objects.create_or_update(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
             census.save()
@@ -358,7 +358,7 @@ def census_create_by_genero(request, voting_id, genero):
 
     for user in users_set:
 
-        census = Census(voting_id = voting_id, voter_id = user.id, 
+        census =  Census.objects.create_or_update(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
         census.save()
