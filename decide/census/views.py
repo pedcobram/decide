@@ -288,10 +288,10 @@ def census_create_by_localidad(request, voting_id, localidad):
 
     for user in users_set:
 
-        census =  Census.objects.create_or_update(voting_id = voting_id, voter_id = user.id, 
+        census =  Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
-        census.save()
+        #census.save()
     return HttpResponse('<h1>POST BY LOCALIDAD</h1>')
 
 @permission_required('admin.can_add_log_entry')
@@ -322,10 +322,10 @@ def census_create_by_age(request, voting_id, edad_minima):
         print("Fecha de nacimiento: "+str(fecha_nacimiento))
 
         if years>=edad_minima:
-            census =  Census.objects.create_or_update(voting_id = voting_id, voter_id = user.id, 
+            census = Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
-            census.save()
+            #census.save()
 
     return HttpResponse('<h1>POST BY AGE</h1>')
 
@@ -358,10 +358,10 @@ def census_create_by_genero(request, voting_id, genero):
 
     for user in users_set:
 
-        census =  Census.objects.create_or_update(voting_id = voting_id, voter_id = user.id, 
+        census =  Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
-        census.save()
+        #census.save()
     return HttpResponse('<h1>POST BY GENERO</h1>')
 
 @permission_required('admin.can_add_log_entry')
