@@ -22,6 +22,7 @@ from authentication.models import DecideUser
 from django.shortcuts import render
 from django.contrib import messages
 import datetime
+from datetime import date
 from django.contrib.auth.decorators import permission_required
 
 from django.shortcuts import render
@@ -29,6 +30,8 @@ from django.contrib import messages
 import csv, io, argparse
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
+from django.shortcuts import redirect
 
 class CensusCreate(generics.ListCreateAPIView):
     permission_classes = (UserIsStaff,)
@@ -270,7 +273,9 @@ def census_create_by_city(request, voting_id, provincia):
         census = Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
-    return HttpResponse('<h1>POST BY PROVINCIA</h1>')
+    message = messages.success(request,'successfully posted by provincia')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
+
 
 @permission_required('admin.can_add_log_entry')
 def census_delete_by_city(request, provincia):
@@ -278,7 +283,8 @@ def census_delete_by_city(request, provincia):
 
     for census in census_set:
         census.delete()
-    return HttpResponse('<h1>DELETE BY PROVINCIA</h1>')
+    message = messages.success(request,'successfully deleted by provincia')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
 
 @permission_required('admin.can_add_log_entry')
 def census_create_by_localidad(request, voting_id, localidad):
@@ -290,7 +296,8 @@ def census_create_by_localidad(request, voting_id, localidad):
         census =  Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
-    return HttpResponse('<h1>POST BY LOCALIDAD</h1>')
+    message = messages.success(request,'successfully posted by localidad')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
 
 @permission_required('admin.can_add_log_entry')
 def census_delete_by_localidad(request, localidad):
@@ -298,7 +305,8 @@ def census_delete_by_localidad(request, localidad):
 
     for census in census_set:
         census.delete()
-    return HttpResponse('<h1>DELETE BY LOCALIDAD</h1>')
+    message = messages.success(request,'successfully deleted by localidad')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
 
 
 @permission_required('admin.can_add_log_entry')
@@ -324,7 +332,8 @@ def census_create_by_age(request, voting_id, edad_minima):
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
 
-    return HttpResponse('<h1>POST BY AGE</h1>')
+    message = messages.success(request,'successfully posted by age')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
 
 @permission_required('admin.can_add_log_entry')
 def census_delete_by_age(request, edad_minima):
@@ -345,7 +354,8 @@ def census_delete_by_age(request, edad_minima):
         if years>=edad_minima:
             census.delete()
 
-    return HttpResponse('<h1>DELETE BY AGE</h1>')
+    message = messages.success(request,'successfully deleted by age')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
 
 
 @permission_required('admin.can_add_log_entry')
@@ -358,7 +368,8 @@ def census_create_by_genero(request, voting_id, genero):
         census =  Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
             fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
             provincia = user.provincia, localidad = user.localidad)
-    return HttpResponse('<h1>POST BY GENERO</h1>')
+    message = messages.success(request,'successfully posted by genero')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
 
 @permission_required('admin.can_add_log_entry')
 def census_delete_by_genero(request,genero):
@@ -367,4 +378,5 @@ def census_delete_by_genero(request,genero):
 
     for census in census_set:
         census.delete()
-    return HttpResponse('<h1>DELETE BY GENERO</h1>')
+    message = messages.success(request,'successfully deleted by genero')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
