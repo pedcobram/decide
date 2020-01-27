@@ -190,7 +190,7 @@ class CensusTestCase(BaseTestCase):
         file_path = myfile.name
         f = open(file_path, "r")
 
-        response = self.client.post('/census-upload/', {'file':f})
+        response = self.client.post('/admin/census-upload/', {'file':f})
         census_number_postOp = Census.objects.count()
 
         self.assertGreater(census_number_postOp, census_number_preOp)
@@ -206,7 +206,7 @@ class CensusTestCase(BaseTestCase):
         file_path = myfile.name
         f = open(file_path, "r")
 
-        response = self.client.post('/census-upload/', {'file':f})
+        response = self.client.post('/admin/census-upload/', {'file':f})
         census_number_postOp = Census.objects.count()
 
         self.assertEqual(census_number_postOp, census_number_preOp)
@@ -222,7 +222,7 @@ class CensusTestCase(BaseTestCase):
         file_path = myfile.name
         f = open(file_path, "r")
         
-        response = self.client.post('/census-upload/', {'file':f})
+        response = self.client.post('/admin/census-upload/', {'file':f})
         census_number_postOp = Census.objects.count()
 
         self.assertGreater(census_number_postOp, census_number_preOp)
@@ -238,7 +238,7 @@ class CensusTestCase(BaseTestCase):
         file_path = myfile.name
         f = open(file_path, "r")
 
-        response = self.client.post('/census-upload/', {'file':f})
+        response = self.client.post('/admin/census-upload/', {'file':f})
         census_number_postOp = Census.objects.count()
 
         self.assertEqual(census_number_postOp, census_number_preOp)
@@ -254,7 +254,7 @@ class CensusTestCase(BaseTestCase):
         file_path = myfile.name
         f = open(file_path, "r")
 
-        response = self.client.post('/census-upload/', {'file':f})
+        response = self.client.post('/admin/census-upload/', {'file':f})
         census_number_postOp = Census.objects.count()
 
         self.assertEqual(census_number_postOp, census_number_preOp)
@@ -270,7 +270,7 @@ class CensusTestCase(BaseTestCase):
         file_path = myfile.name
         f = open(file_path, "r")
 
-        response = self.client.post('/census-upload/', {'file':f})
+        response = self.client.post('/admin/census-upload/', {'file':f})
         census_number_postOp = Census.objects.count()
 
         self.assertEqual(census_number_postOp, census_number_preOp)
