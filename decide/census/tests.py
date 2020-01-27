@@ -1,4 +1,4 @@
-import random, csv
+import random, csv, os
 from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIClient
@@ -195,6 +195,7 @@ class CensusTestCase(BaseTestCase):
 
         self.assertGreater(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 200)
+        os.remove('test.csv')
 
     def test_csv_census_upload_incorrectDataType(self):
         
@@ -210,6 +211,7 @@ class CensusTestCase(BaseTestCase):
 
         self.assertEqual(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 302)
+        os.remove('test_incorrect.csv')
 
     def test_txt_census_upload_success(self):
         
@@ -225,6 +227,7 @@ class CensusTestCase(BaseTestCase):
 
         self.assertGreater(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 200)
+        os.remove('test.txt')
 
     def test_txt_census_upload_incorrectDataType(self):
         
@@ -240,6 +243,7 @@ class CensusTestCase(BaseTestCase):
 
         self.assertEqual(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 302)
+        os.remove('test_incorrect.txt')
 
     def test_census_upload_unsupportedFileType(self):
 
@@ -255,6 +259,7 @@ class CensusTestCase(BaseTestCase):
 
         self.assertEqual(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 302)
+        os.remove('test.py')
     
     def test_census_duplicated_key(self):
 
@@ -270,3 +275,4 @@ class CensusTestCase(BaseTestCase):
 
         self.assertEqual(census_number_postOp, census_number_preOp)
         self.assertEqual(response.status_code, 302)
+        os.remove('test.py')
