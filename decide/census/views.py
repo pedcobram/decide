@@ -22,6 +22,7 @@ from authentication.models import DecideUser
 from django.shortcuts import render
 from django.contrib import messages
 import datetime
+from datetime import date
 from django.contrib.auth.decorators import permission_required
 
 from django.shortcuts import render
@@ -29,6 +30,8 @@ from django.contrib import messages
 import csv, io, argparse
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
+from django.shortcuts import redirect
 
 class CensusCreate(generics.ListCreateAPIView):
     permission_classes = (UserIsStaff,)
@@ -256,3 +259,128 @@ def census_upload(request):
 
     context = {}
     return render(request, template, context)
+
+@permission_required('admin.can_add_log_entry')
+def census_create_by_city(request, voting_id, provincia):
+
+    print("Provincia: "+provincia)
+
+    users_set = DecideUser.objects.filter(provincia=provincia)
+
+
+    for user in users_set:
+
+        census = Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
+            fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+            provincia = user.provincia, localidad = user.localidad)
+    message = messages.success(request,'successfully posted by provincia')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
+
+
+@permission_required('admin.can_add_log_entry')
+def census_delete_by_city(request, provincia):
+    census_set = Census.objects.filter(provincia=provincia)
+
+    for census in census_set:
+        census.delete()
+    message = messages.success(request,'successfully deleted by provincia')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
+
+@permission_required('admin.can_add_log_entry')
+def census_create_by_localidad(request, voting_id, localidad):
+
+    users_set = DecideUser.objects.filter(localidad=localidad)
+
+    for user in users_set:
+
+        census =  Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
+            fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+            provincia = user.provincia, localidad = user.localidad)
+    message = messages.success(request,'successfully posted by localidad')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
+
+@permission_required('admin.can_add_log_entry')
+def census_delete_by_localidad(request, localidad):
+    census_set = Census.objects.filter(localidad=localidad)
+
+    print("Localidad: "+localidad)
+
+    for census in census_set:
+        census.delete()
+    message = messages.success(request,'successfully deleted by localidad')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
+
+
+@permission_required('admin.can_add_log_entry')
+def census_create_by_age(request, voting_id, edad_minima):
+
+    print("Voting id: "+str(voting_id))
+
+    users_set = DecideUser.objects.all()
+
+    for user in users_set:
+        fecha_nacimiento = user.fecha_nacimiento
+        fecha_actual = date.today()
+        #fd_a = user.fecha_nacimiento.strftime("%d/%m/%Y")
+        #date_now = date.today().strftime("%d/%m/%Y")
+        #print("Fecha de nacimiento: "+str(fd_a))
+        #print("Date now: "+str(date_now))
+        years = fecha_actual.year- fecha_nacimiento.year -((fecha_actual.month,fecha_actual.day)<(fecha_nacimiento.month,fecha_nacimiento.day))
+        print("Years: "+str(years))
+        print("Fecha de nacimiento: "+str(fecha_nacimiento))
+
+        if years>=edad_minima:
+            census = Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
+            fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+            provincia = user.provincia, localidad = user.localidad)
+
+    message = messages.success(request,'successfully posted by age')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
+
+@permission_required('admin.can_add_log_entry')
+def census_delete_by_age(request, edad_minima):
+
+    census_set = Census.objects.all()
+
+    for census in census_set:
+        fecha_nacimiento = census.fecha_nacimiento
+        print("f_nac: "+str(fecha_nacimiento))
+        fecha_actual = date.today()
+        print("f_act: "+str(fecha_actual))
+        #fd_a = user.fecha_nacimiento.strftime("%d/%m/%Y")
+        #date_now = date.today().strftime("%d/%m/%Y")
+        #print("Fecha de nacimiento: "+str(fd_a))
+        #print("Date now: "+str(date_now))
+        years = fecha_actual.year- fecha_nacimiento.year -((fecha_actual.month,fecha_actual.day)<(fecha_nacimiento.month,fecha_nacimiento.day))
+        print("Years: "+str(years))
+        print("Fecha de nacimiento: "+str(fecha_nacimiento))
+
+        if years>=edad_minima:
+            census.delete()
+
+    message = messages.success(request,'successfully deleted by age')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
+
+
+@permission_required('admin.can_add_log_entry')
+def census_create_by_genero(request, voting_id, genero):
+
+    users_set = DecideUser.objects.filter(genero=genero)
+
+    for user in users_set:
+
+        census =  Census.objects.update_or_create(voting_id = voting_id, voter_id = user.id, 
+            fecha_nacimiento = user.fecha_nacimiento, genero = user.genero, 
+            provincia = user.provincia, localidad = user.localidad)
+    message = messages.success(request,'successfully posted by genero')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
+
+@permission_required('admin.can_add_log_entry')
+def census_delete_by_genero(request,genero):
+
+    census_set = Census.objects.filter(genero=genero)
+
+    for census in census_set:
+        census.delete()
+    message = messages.success(request,'successfully deleted by genero')
+    return redirect('http://127.0.0.1:8000/admin/census/census/')
