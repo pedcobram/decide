@@ -39,7 +39,7 @@ urlpatterns = [
     path('gateway/', include('gateway.urls')),
     path('admin/census-copy/',census_copy),
     path('admin/census-display/',census_display),
-    path('census-upload/', census_upload, name="census_upload"),
+    path('admin/census-upload/', census_upload, name="census_upload"),
     #census-filtering urls
     path('census_create_by_city/<int:voting_id>/<str:provincia>/', census_create_by_city, name='census_create_by_city'),
     path('census_delete_by_city/<str:provincia>/', census_delete_by_city, name='census_delete_by_city'),

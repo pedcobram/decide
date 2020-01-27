@@ -1,6 +1,14 @@
 {% extends 'admin/change_list.html' %}
 {% block object-tools %}
 
+<a href="http://localhost:8000/admin/census-upload/" class="button">Import Census</a>
+
+<a href="http://localhost:8000/admin/census-copy/" class="button">Copy Census</a>
+
+<a href="http://localhost:8000/admin/census-display/" class="button">Display Census</a>
+
+<p></p>
+
 <script>
 function f_add_provincia(){
     var voting_id = document.getElementById("voting_id").value
